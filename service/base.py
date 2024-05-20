@@ -37,12 +37,11 @@ def get_lsvt_data_dir(out_put_dir):
     return lsvt_data
 
 
-def gen_all_pic():
+def gen_all_pic(conf):
     """
     生成全部图片
     :return:
     """
-    from service import conf
     gen_count = conf['base']['count_per_process']
 
     index = 0

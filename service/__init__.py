@@ -11,7 +11,6 @@ import traceback
 import os
 
 basedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
-conf: dict
 text_img_provider: TextImgProvider
 background_img_provider: BackgroundImgProvider
 text_provider: TextProvider
@@ -35,33 +34,38 @@ def load_from_config():
 
 def init_config():
     log.info("load config")
-    global conf
-    with open(os.path.join(basedir, "config.yml"), 'r') as f:
-        conf = yaml.load(f.read(), Loader=yaml.Loader)
+    # Ensure you have the correct path to the base directory
+    # basedir = os.path.dirname(__file__)
+    basedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
+    # Open the YAML file with utf-8 encoding
+    with open(os.path.join(basedir, "config.yml"), 'r', encoding='utf-8') as f:
+        yaml_loader = yaml.YAML(typ='safe')  # Use safe loader for loading YAML
+        global conf
+        conf = yaml_loader.load(f)
         load_from_config()
-
+    return conf
 
 def init():
     init_config()
 
 
-def run():
+def run(conf):
     try:
         from service.base import gen_all_pic
-        gen_all_pic()
+        gen_all_pic(conf)
     except Exception as e:
         traceback.print_exc()
 
 
 def start():
-    init()
+    conf = init_config()
     process_count = conf['base']['process_count']
     print('Parent process {pid}.'.format(pid=os.getpid()))
     print('process count : {process_count}'.format(process_count=process_count))
 
     p = Pool(process_count)
     for i in range(process_count):
-        p.apply_async(run)
+        p.apply_async(run(conf))
     print('Waiting for all subprocesses done...')
     p.close()
     p.join()
@@ -69,5 +73,5 @@ def start():
 
 
 if __name__ == '__main__':
-    init_config()
+    conf = init_config()
     print(conf)
