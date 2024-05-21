@@ -2,10 +2,10 @@ base:
   # Number of processes to start
   process_count: 2
   # Number of images generated per process
-  count_per_process: 2
+  count_per_process: 160
   # Whether to generate VOC data
-  gen_voc: True
-  gen_lsvt: False
+  gen_voc: False
+  gen_lsvt: True
 
 provider:
   # Configuration for selecting corpus
@@ -18,7 +18,7 @@ provider:
       # Method of reading the corpus (line by line: line, word by word: word)
       type: line
       # Range of generated text length
-      len_range: (20, 40)
+      len_range: (1, 4)
     # - name: chinese
     #   path: assets/corpus/sentence.txt
     #   probability: 0.3
@@ -48,8 +48,8 @@ provider:
     - type: from_generate
       # Probability of selecting an automatically generated background image
       probability: 0.2
-      width_range: (1000, 1500)
-      height_range: (1000, 1500)
+      width_range: 1280
+      height_range: 720
 
   # Text image configuration
   text_img:
@@ -60,9 +60,9 @@ provider:
     # Output directory for text image JSON information
     text_img_info_output_dir: output/text_img_info
     # Minimum font size
-    font_min_size: 15
+    font_min_size: 10
     # Maximum font size
-    font_max_size: 50
+    font_max_size: 60
     # Probability of using specified colors for text (as opposed to automatically selected colors)
     use_char_common_color_probability: 0.5
     # List of optional colors for specified fonts (when generating text images, colors will be selected from the following list for text color)
@@ -74,25 +74,25 @@ provider:
     # Color of the text border
     char_border_color: (255,255,0,255)
     # Automatically pad to the specified long/short edge ratio
-    auto_padding_to_ratio: 10
+    auto_padding_to_ratio: 1
 
   # Layout configuration
   layout:
     # Output directory for layout files
     out_put_dir: output
     # Range of rotation angles for pasted images
-    rotate_angle_range: (-8, 8)
+    rotate_angle_range: (-4, 4)
     # Various layout modes and their selection probabilities
     strategy_list:
       # - name: HorizontalStrategy
       #   probability: 0.4
-      - name: VerticalStrategy
-        probability: 0.8
-      # - name: HorizontalFlowStrategy
-      #   probability: 0.4
+      # - name: VerticalStrategy
+      #   probability: 1
+      - name: HorizontalFlowStrategy
+        probability: 1
       # - name: VerticalFlowStrategy
       #   probability: 0.4
-      - name: RandomPasteStrategy
-        probability: 0.2
+      # - name: RandomPasteStrategy
+      #   probability: 0.2
       # - name: CustomizationStrategy1
       #   probability: 0.1

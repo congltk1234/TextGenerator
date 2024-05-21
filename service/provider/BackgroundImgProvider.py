@@ -61,8 +61,8 @@ class GenrateGaussImage(object):
         """
         bg_high = Random.random_float(220, 255)
         bg_low = bg_high - Random.random_float(1, 60)
-        width = Random.random_int(self._width_range[0], self._width_range[1])
-        height = Random.random_int(self._height_range[0], self._height_range[1])
+        width = self._width_range
+        height = self._height_range
         img = np.random.randint(bg_low, bg_high, (height, width)).astype(np.uint8)
         if ks is None:
             ks = [7, 9, 11, 13]
@@ -77,7 +77,7 @@ class GenrateGaussImage(object):
 
 class GenrateQuasicrystalImage(object):
 
-    def __init__(self, width_range=(1000, 1500), height_range=(1000, 1500)):
+    def __init__(self, width_range=1280, height_range=720):
         """
 
         :param width_range: generate image width size range
@@ -96,8 +96,8 @@ class GenrateQuasicrystalImage(object):
         """
             Create a background with quasicrystal (https://en.wikipedia.org/wiki/Quasicrystal)
         """
-        width = Random.random_int(self._width_range[0], self._width_range[1])
-        height = Random.random_int(self._height_range[0], self._height_range[1])
+        width = self._width_range
+        height = self._height_range
 
         image = np.zeros((height, width, 3), dtype=np.uint8)
         rotation_count = Random.random_int(10, 20)
